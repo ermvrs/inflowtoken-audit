@@ -1,0 +1,35 @@
+Selam Erim,
+
+Nasılsın? Konuştuğumuzda dediğim gibi 
+https://docs.google.com/document/d/1zqXn_ZpL6t0WUA8GDCY09CA7kspBIDkQxIBy7crzWdE/edit?usp=sharing 
+şu dökümanda süreci anlatmaya çalıştım. Ben hardhat test scripti, polygonscan üzerinden manuel test ve static analiz toolları ile üzerinden bir tur geçtim. Matic kullanacağımız için gas optimizasyonu için kasmadım. Dün akşam toplantıda hesaplamada bir düzenleme yapacağımız ortaya çıktı. Onu düzenleyip gün içinde yenileri atıcam ama temelde değişen bir şey olmucak.
+  Ekran Kaydı 2022-06-24 09.12.28.mov 
+
+Temelde işleyiş;
+1- Standart cap siz ERC20 kontratı
+2- Buy and Vesting kontratı
+3- Oracle dan son fiyat bilgisi çeken kontratlarımız var.
+
+1- ERC20 kontratından => Vesting kontratına FLW miktarını gönderip doğrudan vesting kontratı üzerinden işlemleri sağlıyorum. 
+2- Şuan kontratta satın alınma yapıldıktan sonra 5dk cliff, 1 saat boyunca her 5da bir linear açılma söz konusu.
+
+
+
+Token Kontratı:
+https://mumbai.polygonscan.com/address/0x5CBC4F6e4428b2e4814f3cf3999635eBd589302F
+
+Vesting Kontratı:
+https://mumbai.polygonscan.com/address/0xFAaA764Bd35e61b5dA76A0d6AF5334E42F50a28e
+
+PriceConsumer:
+https://mumbai.polygonscan.com/address/0x125b3132b3c30912f15f5f1e380e936342c08654
+
+
+Benim de bir kaç sorum olacak; 
+1- Satış anında mint edip kontrata FLW leri çekebilirim. Sence buna gerek var mı? Ben sonraki süreçlerde de farklı havuzlar vs. olacağından aslında dağıta dağıta gitmeyi daha doğru buldum.
+2- Sence ben mintToken fonksiyonu ile verilen adet kadar mint ettiriyorum. İlk etap dağılacak miktarı deploy esnasında mint etmeye gerek var mı?
+3- Oracle a gerek var mı? Yani private sale sürecinde Matic değeri ne kadar oynak olabilir bilemedim. Biz temelde USD karşılığı bir tutarda FLW token vermeyi düşünmüştük. Doğrudan şuan (0.5 küsür MATIC fiyatı bizim satış fiyatımız 0.02) oracle ı aradan çıkarıp kullansak daha iyi olmaz mı?
+
+Müsait olduğunda dilersen üzerinden tekrar telefonlaşalım. Umarım eksiğim çıkmaz ama çıkarsa da düzenleyebilirim. Her zaman 2-3. göz daha iyisini önerebilir düşüncesindeyim. Şimdiden çok teşekkür ederim. 
+
+Görüşmek üzere.
