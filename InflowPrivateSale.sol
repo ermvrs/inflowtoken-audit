@@ -284,7 +284,8 @@ contract InflowPrivateSale is Ownable, ReentrancyGuard {
         );
         bytes32 vestingScheduleId = computeNextVestingScheduleIdForHolder(
             _beneficiary
-        );
+        ); // returns bytes32 for vestingSchedules mapping
+
         uint256 cliff = _start.add(_cliff);
 
     
@@ -336,7 +337,7 @@ contract InflowPrivateSale is Ownable, ReentrancyGuard {
         );
         uint256 vestedAmount = _computeReleasableAmount(vestingSchedule);
         if (vestedAmount > 0) {
-            release(vestingScheduleId, vestedAmount);
+            release(vestingScheduleId, vestedAmount); // 11:29
         }
         uint256 unreleased = vestingSchedule.amountTotal.sub(
             vestingSchedule.released
@@ -494,18 +495,18 @@ contract InflowPrivateSale is Ownable, ReentrancyGuard {
         ) {
             return 0;
         } else if (
-            currentTime >= vestingSchedule.start.add(vestingSchedule.duration)
+            currentTime >= vestingSchedule.start.add(vestingSchedule.duration) // duration total length of vesting
         ) {
-            return vestingSchedule.amountTotal.sub(vestingSchedule.released);
+            return vestingSchedule.amountTotal.sub(vestingSchedule.released); // total - released
         } else {
-            uint256 timeFromStart = currentTime.sub(vestingSchedule.start);
-            uint256 secondsPerSlice = vestingSchedule.slicePeriodSeconds;
-            uint256 vestedSlicePeriods = timeFromStart.div(secondsPerSlice);
-            uint256 vestedSeconds = vestedSlicePeriods.mul(secondsPerSlice);
+            uint256 timeFromStart = currentTime.sub(vestingSchedule.start); // now - start = assume 1 day
+            uint256 secondsPerSlice = vestingSchedule.slicePeriodSeconds; // slicePerSec
+            uint256 vestedSlicePeriods = timeFromStart.div(secondsPerSlice); // 1 day / slice
+            uint256 vestedSeconds = vestedSlicePeriods.mul(secondsPerSlice); // 1 day / slice ) * slicePerSec
             uint256 vestedAmount = vestingSchedule
                 .amountTotal
                 .mul(vestedSeconds)
-                .div(vestingSchedule.duration);
+                .div(vestingSchedule.duration); // vestedAmount = amount * timeFromStart / duration 
             vestedAmount = vestedAmount.sub(vestingSchedule.released);
             return vestedAmount;
         }
@@ -521,8 +522,8 @@ contract InflowPrivateSale is Ownable, ReentrancyGuard {
 
     modifier onlyOrigin() {
     // disallow access from contracts
-    require(msg.sender == tx.origin, "Come on!!!");
-    _;
+        require(msg.sender == tx.origin, "Come on!!!");
+        _;
     }
 
    

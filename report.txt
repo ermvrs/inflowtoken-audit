@@ -32,12 +32,19 @@ InflowPrivateSale.sol
     Line 112: Instead of checking 'token' parameters address. You can change parameter type of token from 'address' to 'IERC20'. (INFORMATION)
     Line 137: Instead of setting inflowtoken price in function. Set it as global constant variable. (INFORMATION)
     Line 138: We assumed that '_maticUsd' parameter is used to get latest price of matic. It can be entered by user who calls 'buyTokens' function. If parameter set higher than MATIC price.
-                User will be able to buy tokens with close to zero price.
+                User will be able to buy tokens with close to zero price. (High Severity)
     Line 156: Using struct as on mapping 'holderMap' is unnecessary. You can just define holder values with address => uint256 mapping. (INFORMATION)
     Line 160: Returning value from non callable from contract function is unnecessary. (INFORMATION)
-    Line 513: Block.timestamp can be abused by block miners. Using block.number is much secure. (INFORMATION)
-    Line 279: Require statement for '_duration' parameter is unnecessary. It was set as constant on 'buyTokens' function. (INFORMATION)
     Line 169: If owner of InflowToken.sol and InflowPrivateSale.sol contracts will be same. The Private sale contract should sign newly added users messages off-chain to 
             let them be able to buy the token, and that means owner key can be accesible from off-chain oracle or a person. Vulnerability on off-chain oracle can also cause minting infinite tokens.
             Recommendation is use seperate wallets for signing ECDSA and minting Inflow Tokens (Low Severity)
+    Line 279: Require statement for '_duration' parameter is unnecessary. It was set as constant on 'buyTokens' function. (INFORMATION)
+    Line 345 - Line 391: Since release method called by revoke method. There is double substituion on 'vestingSchedulesTotalAmount' variable. (Medium Severity)
+    Line 355: Since 'withdraw' method is onlyOwner, you can send tokens directly to the msg.sender instead of owner().
+    Line 368: Before releasing token, it will be much more informative if you check contract releasable balance is enough to pay that vest. If owner withdraw tokens manually then this function fails
+            on 'safeTransfer' method. (INFORMATION)
+    Line 388: If you dont gonna send native coin to the address 'beneficiaryPayable' then its unnecessary to set that address as payable. (INFORMATION)
+    Line 504: Vesting calculation has unnecessary calculations. 'vestedSlicePeriods' variable defined as division 'timeFromStart' for 'secondsPerSlice' and 'vestedSeconds' is a multiplication of
+            'secondsPerSlice' with past line. So 'vestedSeconds' will always equal to 'timeFromStart' (INFORMATION)
+    Line 513: Block.timestamp can be abused by block miners. Using block.number is much secure. (INFORMATION)
     
